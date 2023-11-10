@@ -25,10 +25,6 @@ button:hover {
     background-color: black;
 }
 
-#buttons {
-    display: flex;
-}
-
 #display {
     display: flex;
     justify-content: end;
@@ -39,6 +35,10 @@ button:hover {
     border-radius: 4px;
     font-family: 'VT323', monospace;
     font-size: 96px;
+}
+
+#buttons {
+    display: flex;
 }
 
 #digits {
