@@ -1,19 +1,21 @@
-let firstNumber = 0;
-let secondNumber = 0;
+let firstNumber = '';
+let secondNumber = '';
 let operator = '';
 let display = document.querySelector('#display');
 
-let add = (a, b) => a + b;
-let subtract = (a, b) => a - b;
-let multiply = (a, b) => a * b;
-let divide = (a, b) => a / b;
-
-function operate(firstNumber, operator, secondNumber) {
-    return operator(firstNumber, secondNumber);
-}
+let operations = { //put in object so I can invoke with a variable
+    add: (a, b) => Number(a) + Number(b),
+    subtract: (a, b) => Number(a) - Number(b),
+    multiply: (a, b) => Number(a) * Number(b),
+    divide: (a, b) => Number(a) / Number(b)
+};
 
 function setDisplay(num) {
-    display.textContent = num;
+    if (num.length > 10) {
+        display.textContent = "OVERFLOW"
+    } else {
+        display.textContent = num;
+    }
 }
 
 function turnOn() {
@@ -23,33 +25,56 @@ function turnOn() {
 }
 
 function clear() {
-    firstNumber = 0;
-    operator = 0;
-    secondNumber = 0;
+    firstNumber = '';
+    secondNumber = '';
+    operator = '';
     setDisplay(0);
 }
 
-function setInput(button) {
-    //check for non-digit buttons
+function operate() {
+    let result = operations[operator](firstNumber, secondNumber);
+    firstNumber = result;
+    secondNumber = '';
+    operator = '';
+    setDisplay(result);
+}
+
+function handleInput(button) {
+    //check for non-digit buttons first
     if (button.id == 'on') {
         turnOn();
     } else if (button.id == 'clear') {
         clear();
+    } else if (button.id == 'equals') {
+        operate();
+    } else if (button.parentElement.id == 'operators') {
+        operator = button.id;
+    } else if (button.parentElement.id == 'digits' && operator == '') {
+        setFirstNumber(button.id);
     } else {
-        if (display.textContent == '0' || display.textContent == '') {
-            //remove leading 0
-            firstNumber = button.id;
-        } else {
-            //update firstNumber
-            firstNumber = firstNumber + button.id;
-        }
-        setDisplay(firstNumber);
+        setSecondNumber(button.id);
     }
 }
 
+function setFirstNumber(num) {
+    if (display.textContent == '0' || display.textContent == '') {
+        //remove leading 0
+        firstNumber = num;
+    } else {
+        firstNumber = firstNumber + num;
+    }
+    setDisplay(firstNumber);
+}
+
+function setSecondNumber(num) {
+    secondNumber = secondNumber + num;
+    setDisplay(secondNumber);
+}
+
 let buttons = document.querySelectorAll('button');
+console.log(buttons);
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
-        setInput(button);
+        handleInput(button);
     });
 });
