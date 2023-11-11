@@ -3,7 +3,7 @@ let secondNumber = '';
 let operator = '';
 let display = document.querySelector('#display');
 
-let operations = { //put in object so I can invoke with a variable
+let operations = { //object so we can invoke with a variable
     add: (a, b) => Number(a) + Number(b),
     subtract: (a, b) => Number(a) - Number(b),
     multiply: (a, b) => Number(a) * Number(b),
@@ -18,9 +18,12 @@ function setDisplay(num) {
     }
 }
 
-function turnOn() {
+function toggleOn() {
     if(display.textContent == '') {
         setDisplay(0);
+    } else {
+        clear();
+        setDisplay('');
     }
 }
 
@@ -41,8 +44,8 @@ function operate() {
 
 function handleInput(button) {
     //check for non-digit buttons first
-    if (button.id == 'on') {
-        turnOn();
+    if (button.id == 'onoff') {
+        toggleOn();
     } else if (button.id == 'clear') {
         clear();
     } else if (button.id == 'equals') {
